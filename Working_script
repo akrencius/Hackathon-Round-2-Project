@@ -1,23 +1,42 @@
 #! /usr/bin/env python
 #FileName=""
 #InFile = open(FileName, 'rU')
-seq= "GGTTTCCGATGGCACCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+seqR = "GGTTTCCGATGGCACCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+seqP = "GGTTTCCGATGGCCCCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+seqD = "GGTTTCCGATGGCATCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
 mer ="gtctTcca"
-output = []
+PS = []
+DS = []
+PN = []
+DN = []
 mer = mer.upper()
 L=len(mer)
 i=0
-for i in range(len(seq)):
+for i in range(len(seqR)):
+    if seqR[i] != seqP[i]:
+        PS.append(i)
+    if seqR[i] != seqD[i]:
+        DS.append(i)
     t = 0
-    errors = 0
+    errorsPN = 0
+    errorsDN = 0
     #This if statement assures that we do not go off the end of the string
-    if (len(seq)-i) > L:
-    # Loops through letter-by-letter and allows for one mismatch. 
-    # We could make this a user command (how many mismatches do you want to allow?)
+    if (len(seqR)-i) > L:
+        # Loops through letter-by-letter and allows for one mismatch. 
+        # We could make this a user command (how many mismatches do you want to allow?)
         for t in range(L):
-            if seq[i+t] != mer[t]:
-                errors += 1
-        if errors < 2:
-            output.append(i)
-print(output)
- 
+            if seqP[i+t] != mer[t]:
+                errorsPN += 1
+        for t in range(L):
+            if seqD[i+t] != mer[t]:
+                errorsDN += 1
+        if errorsPN < 2:
+            PN.append(i)
+        if errorsDN < 2:
+            DN.append(i)
+
+
+print(PS)
+print(DS)
+print(PN)
+print(DN)
