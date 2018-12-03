@@ -2,13 +2,18 @@
 #FileName=""
 #InFile = open(FileName, 'rU')
 seqR = "GGTTTCCGATGGCACCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
-seqP = "GGTTTCCGATGGCCCCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
-seqD = "GGTTTCCGATGGCATCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+seqP = "GGTTTCCGATGGCCCCTGTGTCAAGGTGTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+seqD = "GGTTTCCGATGGCATCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTACCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
 mer ="gtctTcca"
+#Defines location of PS and DS
 PS = []
 DS = []
+#Defines location of PN and DN
 PN = []
 DN = []
+#Defines location of miRNA's
+miRNAP = []
+miRNAD = []
 mer = mer.upper()
 L=len(mer)
 i=0
@@ -18,25 +23,28 @@ for i in range(len(seqR)):
     if seqR[i] != seqD[i]:
         DS.append(i)
     t = 0
-    errorsPN = 0
-    errorsDN = 0
+    errorsP = 0
+    errorsD = 0
     #This if statement assures that we do not go off the end of the string
     if (len(seqR)-i) > L:
         # Loops through letter-by-letter and allows for one mismatch. 
         # We could make this a user command (how many mismatches do you want to allow?)
         for t in range(L):
             if seqP[i+t] != mer[t]:
-                errorsPN += 1
+                errorsP += 1
         for t in range(L):
             if seqD[i+t] != mer[t]:
-                errorsDN += 1
-        if errorsPN < 2:
-            PN.append(i)
-        if errorsDN < 2:
-            DN.append(i)
+                errorsD += 1
+        if errorsP < 2:
+            miRNAP.append(i)
+        if errorsD < 2:
+            miRNAD.append(i)
 
 
 print(PS)
 print(DS)
-print(PN)
-print(DN)
+print(miRNAP)
+print(miRNAD)
+
+ 
+ 
