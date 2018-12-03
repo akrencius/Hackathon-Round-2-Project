@@ -5,6 +5,9 @@ seqR = "GGTTTCCGATGGCACCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATA
 seqP = "GGTTTCCGATGGCCCCTGTGTCAAGGTGTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
 seqD = "GGTTTCCGATGGCATCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTACCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
 mer ="gtctTcca"
+#Defines location of all Polymorphic and Divergent mutations
+PAll = []
+DAll = []
 #Defines location of PS and DS
 PS = []
 DS = []
@@ -19,9 +22,9 @@ L=len(mer)
 i=0
 for i in range(len(seqR)):
     if seqR[i] != seqP[i]:
-        PS.append(i)
+        PAll.append(i)
     if seqR[i] != seqD[i]:
-        DS.append(i)
+        DAll.append(i)
     t = 0
     errorsP = 0
     errorsD = 0
@@ -41,10 +44,29 @@ for i in range(len(seqR)):
             miRNAD.append(i)
 
 
-print(PS)
-print(DS)
+print(PAll)
+print(DAll)
 print(miRNAP)
 print(miRNAD)
 
- 
- 
+## Making a full list of all locations of all nucleotides on the polymorphism sequence
+Prna = []
+for i in miRNAP:
+    for k in range(i, (i+len(mer))):
+        Prna.append(k) 
+
+## Making a full list of all locations of all nucleotides on the divergent sequence
+Drna = []
+for i in miRNAD:
+    for k in range(i, (i+len(mer))):
+        Drna.append(k)
+
+## Next section filters out all the of the mutations into PS, PN, DS, DN
+PS = [x for x in PAll if x not in Prna]
+PN = [x for x in PAll if x not in PS]
+print(PS)
+print(PN)
+DS = [x for x in DAll if x not in Drna]
+DN = [x for x in DAll if x not in DS]
+print(DS)
+print(DN)
