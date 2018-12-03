@@ -2,8 +2,8 @@
 #FileName=""
 #InFile = open(FileName, 'rU')
 seqR = "GGTTTCCGATGGCACCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
-seqP = "GGTTTCCGATGGCCCCTGTGTCAAGGTGTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
-seqD = "GGTTTCCGATGGCATCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTACCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+seqP = "GGTTTCCGATGGCCCCTGTGTCAAGGTGTTCCAACAACTCCGGGTCTTCCGGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+seqD = "GGTTTCCGATGGCATCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTACCAGCGACTTCTAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
 mer ="gtctTcca"
 #Defines location of all Polymorphic and Divergent mutations
 PAll = []
@@ -44,10 +44,10 @@ for i in range(len(seqR)):
             miRNAD.append(i)
 
 
-print(PAll)
-print(DAll)
-print(miRNAP)
-print(miRNAD)
+print("All mismatches on Polymotphic strain:", PAll)
+print("All mismatches on Divergent strain:", DAll)
+print("Polymorphic miRNA:", miRNAP)
+print("Divergent miRNA:", miRNAD)
 
 ## Making a full list of all locations of all nucleotides on the polymorphism sequence
 Prna = []
@@ -60,13 +60,12 @@ Drna = []
 for i in miRNAD:
     for k in range(i, (i+len(mer))):
         Drna.append(k)
-
 ## Next section filters out all the of the mutations into PS, PN, DS, DN
 PS = [x for x in PAll if x not in Prna]
 PN = [x for x in PAll if x not in PS]
-print(PS)
-print(PN)
+print("PS:", PS)
+print("PN:", PN)
 DS = [x for x in DAll if x not in Drna]
 DN = [x for x in DAll if x not in DS]
-print(DS)
-print(DN)
+print("DS:", DS)
+print("DN:", DN)
