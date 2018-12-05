@@ -1,10 +1,56 @@
 #! /usr/bin/env python
-#FileName=""
-#InFile = open(FileName, 'rU')
-seqR = "GGTTTCCGATGGCACCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTTCCAGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
-seqP = "GGTTTCCGATGGCCCCTGTGTCAAGGTGTTCCAACAACTCCGGGTCTTCCGGCGACTTCAAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
-seqD = "GGTTTCCGATGGCATCTGTGTCAAGGTCTTCCAACAACTCCGGGTCTACCAGCGACTTCTAGTCTTCCAATAATCTCAAGGTCTTCCAGATAATCCTGAGCTTCCAGAAAATCCACATCT"
+
+
+#Commented out the input name so I didn't have to keep typing it in. Can reintroduce later
+#alignfile = input("Enter name of alignment file: ")
+
+#mirfile = input("Enter name of the miRNA file: ")
+
+miss = input("Enter mismatch threshold:")
+miss = int(miss)
+
+alignfile = "human-bonobo.fas"
+
+mirfile = "miR7.txt"
+
+infile1 = open(alignfile, 'r')
+infile2 = open(mirfile, 'r')
+outfilename = alignfile + ".txt"
+writeoutfile = True 
+
+mirlist = []
+
+
+for Line in infile2:
+    Line = Line.strip("\n")
+    mirlist.append(Line)
+
+names = []
+sequences = []
+sequence = ""
+
+
+for Line in infile1:
+    Line = Line.strip("\n")
+    if Line.startswith(">"):
+        sequences.append(sequence)
+        sequence = ""
+        Line = Line.strip(">")
+        names.append(Line)
+    else: 
+        sequence = sequence + Line
+sequences.append(sequence)
+del sequences[0]
+seqs = dict(zip(names,sequences))
+
+#assuming the sequences are in the same order every time, I think this will work fine
+seqR = sequences[0]
+seqP = sequences[1]
+seqD = sequences[2]
+#Will switch this later, just a test to see if it works
 mer ="gtctTcca"
+##### Defining result lists. Thought I would introduce now in case 
+##### we want to turn this into a function (will initialize everything
 #Defines location of all Polymorphic and Divergent mutations
 PAll = []
 DAll = []
@@ -21,9 +67,9 @@ mer = mer.upper()
 L=len(mer)
 i=0
 for i in range(len(seqR)):
-    if seqR[i] != seqP[i]:
+    if seqR[i] != seqP[i] and seqR[i] != "-" and seqP[i] != "-":
         PAll.append(i)
-    if seqR[i] != seqD[i]:
+    if seqR[i] != seqD[i] and seqR[i] != "-" and seqD[i] != "-":
         DAll.append(i)
     t = 0
     errorsP = 0
@@ -38,13 +84,13 @@ for i in range(len(seqR)):
         for t in range(L):
             if seqD[i+t] != mer[t]:
                 errorsD += 1
-        if errorsP < 2:
+        if errorsP < miss:
             miRNAP.append(i)
-        if errorsD < 2:
+        if errorsD < miss:
             miRNAD.append(i)
 
 
-print("All mismatches on Polymotphic strain:", PAll)
+print("All mismatches on Polymorphic strain:", PAll)
 print("All mismatches on Divergent strain:", DAll)
 print("Polymorphic miRNA:", miRNAP)
 print("Divergent miRNA:", miRNAD)
